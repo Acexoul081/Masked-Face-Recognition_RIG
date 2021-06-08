@@ -503,7 +503,13 @@ class Facenet():
                     print("test set accuracy:{}".format( test_acc))
 
                 print("Epoch time consumption:",d_t)
-
+                
+            pb_save_path = "pb_{}.pb".format(np.round(float(train_acc*100),1))
+            pb_save_path = os.path.join(self.save_dir,pb_save_path)
+            graph = tf.get_default_graph().as_graph_def()
+            output_graph_def = tf.graph_util.convert_variables_to_constants(sess, graph, self.pb_save_list)
+            with tf.gfile.GFile(pb_save_path, 'wb')as f:
+                f.write(output_graph_def.SerializeToString())
     #----loss functions
     def arcloss(self, x, normx_cos, labels, m1, m2, m3, s):
         norm_x = tf.norm(x, axis=1, keepdims=True)
@@ -909,7 +915,7 @@ if __name__ == "__main__":
                  "opti_method":opti_method,'learning_rate':learning_rate,"save_dir":save_dir,'embed_length':embed_length}
     cls.model_init(para_dict)
 
-    epochs = 10
+    epochs = 100
     GPU_ratio = None#0.1 ~ 0.9
     batch_size = 96#depends on your GPU resource. Set <= 96 if 6GB GPU using inception_resnet_v1
     ratio = None
