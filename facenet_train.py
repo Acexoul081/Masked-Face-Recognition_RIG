@@ -580,6 +580,8 @@ class Facenet():
                     if 'rdm_br' in process_dict.keys():
                         if process_dict['rdm_br'] is True:
                             mean_br = np.mean(img)
+                            if mean_br == float("Nan"):
+                                print(f'mean_br{mean_br} of path: {path}')
                             br_factor = np.random.randint(mean_br * 0.7, mean_br * 1.3)
                             img = np.clip(img / mean_br * br_factor, 0,
                                           255)  # the multiplication makes the numeric type become floating
@@ -917,7 +919,7 @@ if __name__ == "__main__":
 
     epochs = 100
     GPU_ratio = None#0.1 ~ 0.9
-    batch_size = 96#depends on your GPU resource. Set <= 96 if 6GB GPU using inception_resnet_v1
+    batch_size = 48#depends on your GPU resource. Set <= 96 if 6GB GPU using inception_resnet_v1
     ratio = None
     select_num = 2
 
