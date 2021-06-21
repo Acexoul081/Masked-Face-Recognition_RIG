@@ -138,11 +138,11 @@ class Facenet():
         if infer_method == "simple_resnet":
             prelogits = self.simple_resnet(tf_input,tf_keep_prob,self.class_num)
             embeddings = tf.nn.l2_normalize(prelogits, 1, 1e-10, name='embeddings')
-        elif infer_method == "inception_resnet_v1":
-            prelogits, _ = inception_resnet_v1(tf_input, tf_keep_prob, phase_train=tf_phase_train,
-              bottleneck_layer_size=embed_length, weight_decay=0.0, reuse=None)
-            prelogits = tf.identity(prelogits,name='prelogits')
-            embeddings = tf.nn.l2_normalize(prelogits, 1, 1e-10, name='embeddings')
+        # elif infer_method == "inception_resnet_v1":
+        #     prelogits, _ = inception_resnet_v1(tf_input, tf_keep_prob, phase_train=tf_phase_train,
+        #       bottleneck_layer_size=embed_length, weight_decay=0.0, reuse=None)
+        #     prelogits = tf.identity(prelogits,name='prelogits')
+        #     embeddings = tf.nn.l2_normalize(prelogits, 1, 1e-10, name='embeddings')
         elif infer_method == "inception_resnet_v2":
             prelogits = inception_resnet_v2(tf_input, tf_keep_prob, phase_train=tf_phase_train,
               bottleneck_layer_size=embed_length, weight_decay=0.0, reuse=None)
@@ -906,8 +906,8 @@ if __name__ == "__main__":
 
     cls = Facenet(para_dict)
 
-    model_shape = [None,224,224,3]#at least[None,80,80,3] if you use inception_resnet_v1
-    infer_method = "VGG16" #"inception_resnet_v2" #inception_resnet_v1
+    model_shape = [None,112,112,3]#at least[None,80,80,3] if you use inception_resnet_v1
+    infer_method = "inception_resnet_v2" #inception_resnet_v1
     loss_method = "cross_entropy" #"arc_loss"#"cross_entropy"
     opti_method = "adam" #adagrad #adam
     learning_rate = 5e-4
