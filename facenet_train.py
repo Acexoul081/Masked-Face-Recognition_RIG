@@ -49,7 +49,7 @@ class Facenet():
         label_dict = para_dict['label_dict']
         get_image_type = para_dict['get_image_type']
 
-        mask_img_dir = r".\mask_img"
+        # mask_img_dir = r".\mask_img"
 
         #----get label names to number dictionary
         # if label_dict is None:
@@ -92,12 +92,12 @@ class Facenet():
         #     print("test path shape:{}, test label shape:{}".format(test_paths.shape, test_labels.shape))
 
         #----read mask png images
-        mask_files = [file.path for file in os.scandir(mask_img_dir) if file.name.split(".")[-1] == 'png']
-        len_mask = len(mask_files)
-        if len_mask == 0:
-            print("Error: no face mask PNG images in  ", mask_img_dir)
-        else:
-            print("mask image quantity:",len_mask)
+        # mask_files = [file.path for file in os.scandir(mask_img_dir) if file.name.split(".")[-1] == 'png']
+        # len_mask = len(mask_files)
+        # if len_mask == 0:
+        #     print("Error: no face mask PNG images in  ", mask_img_dir)
+        # else:
+        #     print("mask image quantity:",len_mask)
 
         #----log update
         content = dict()
@@ -112,7 +112,7 @@ class Facenet():
         self.class_num = class_num
         self.content = content
         self.get_image_type = get_image_type
-        self.mask_files = mask_files
+        # self.mask_files = mask_files
         # if test_img_dir is not None:
         #     self.test_img_dir = test_img_dir
         #     self.test_paths = test_paths
@@ -915,21 +915,24 @@ if __name__ == "__main__":
 
     para_dict = {"model_shape":model_shape,"infer_method":infer_method,"loss_method":loss_method,
                  "opti_method":opti_method,'learning_rate':learning_rate,"save_dir":save_dir,'embed_length':embed_length}
+
+
+            
     cls.model_init(para_dict)
 
     epochs = 100
-    GPU_ratio = None#0.1 ~ 0.9
-    batch_size = 48#depends on your GPU resource. Set <= 96 if 6GB GPU using inception_resnet_v1
+    GPU_ratio = None #0.1 ~ 0.9
+    batch_size = 64 #depends on your GPU resource. Set <= 96 if 6GB GPU using inception_resnet_v1
     ratio = None
-    select_num = 2
+    select_num = 6
 
 
     random_flip = True
     random_brightness = True
-    random_crop = True
+    random_crop = False
     random_angle = True
     random_noise = True
-    aug_times = 4
+    aug_times = 6
 
     process_dict = {"rdm_flip":random_flip,'rdm_br':random_brightness,'rdm_crop':random_crop,'rdm_angle':random_angle,
                     'rdm_noise':random_noise}
